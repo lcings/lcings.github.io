@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
-<title>lcings</title>
-
-<!--公告样式-->
-<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-<link rel="stylesheet" type="text/css" href="css/demo.css" />
-
-<!--必要样式-->
-<link rel="stylesheet" type="text/css" href="css/tabs.css" />
-<link rel="stylesheet" type="text/css" href="css/tabstyles.css" />
-<link rel="stylesheet" href="css/w-icon.css">
-<script src="js/modernizr.custom.js"></script>
-
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>lcings</title>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/menu_sideslide.css" />
+	<!--[if IE]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 </head>
 <body>
-
-<div class="container" style="padding-top:40px">
-	<div class="tabs tabs-style-circle">
-		<nav>
-			<ul>
-				<li><a onclick="load_page('tools/home', 600, 'No');" class="w-icon-windows"><br/><span>Home</span></a></li>
-				<li><a onclick="load_page('tools/mask_detection', 1000, 'Yes');" class="w-icon-smile"><br/><span>MaskDetect</span></a></li>
-				<li><a onclick="load_page('tools/machinarium', 600, 'No');" class="w-icon-reddit"><br/><span>Machinarium</span></a></li>
-				<li><a onclick="load_page('tools/graduation/index.html', 600, 'No');"class="w-icon-global"><br/><span>Graduation</span></a></li>
-				<li><a onclick="load_page('tools/fruit_ninja', 600, 'No');"class="w-icon-apple"><br/><span>FruitNinja</span></a></li>
-			</ul><br/>
-			<ul>
-				<li><a onclick="load_page('tools/mspaint', 600, 'No');" class="w-icon-pinterest"><br/><span>MSpaint</span></a></li>
-				<li><a onclick="load_page('tools/plants_vs_zombies', 600, 'No');" class="w-icon-eye-o"><br/><span>plantsVSzombies</span></a></li>
-				<li><a onclick="load_page('tools/cassette_player', 600, 'No');" class="w-icon-camera-o"><br/><span>CassettePlayer</span></a></li>
-				<li><a onclick="load_page('tools/chess', 600, 'No');" class="w-icon-appstore-o"><br/><span>Chess</span></a></li>
-				<li><a onclick="load_page('tools/swf/photo', 600, 'No');" class="w-icon-picture"><br/><span>Photo</span></a></li>
-			</ul><br/>
-			<ul>
-				<li><a onclick="load_page('tools/work_space', 600, 'No');" class="w-icon-laptop"><br/><span>WorkSpace</span></a></li>
-				<li><a onclick="load_page('tools/swf/calc', 608);" class="w-icon-table"><br/><span>Calculate</span></a></li>
-				<li><a onclick="load_page('tools/conv_net_draw', 600, 'No');" class="w-icon-share"><br/><span>ConvNetDraw</span></a></li>
-				<li><a onclick="load_page('tools/nnsvg', 600, 'Yes');" class="w-icon-uiw"><br/><span>NNSVG</span></a></li>
-				<li><a onclick="load_page('tools/netscope/#/editor', 600, 'Yes');" class="w-icon-component"><br/><span>Netscope</span></a></li>
-			</ul><br/>
-			<ul>
-				<li><a onclick="load_page('tools/vip_video', 700, 'No');" class="w-icon-cloud-upload-o"><br/><span>VIP Video</span></a></li>
-				<li><a onclick="load_page('tools/swf/nes', 510, 'No');" class="w-icon-coffee"><br/><span>NES</span></a></li>
-				<li><a onclick="load_page('tools/swf/match', 700, 'No');" class="w-icon-asterisk"><br/><span>match</span></a></li>
-				<li><a onclick="load_page('https://bellard.org/jslinux/vm.html?url=alpine-x86.cfg&mem=192', 510, 'No');" class="w-icon-linux"><br/><span>Linux</span></a></li>
-				<li><a onclick="load_page('tools/swf/iq_test', 600, 'No');" class="w-icon-meh-o"><br/><span>IQ Test</span></a></li>
-			</ul>
+<div class="menu-wrap"
+	<div class="menu-wrap">
+		<nav class="menu">
+			<div class="icon-list">
+				<a onclick="load_page('tools/home', 600, 'No', 'Home', 'fa fa-fw fa-home');" ><i class="fa fa-fw fa-home"></i><span>Home</span></a>
+				<a onclick="load_page('tools/mask_detection', 1300, 'Yes', 'Mask Detect', 'fa fa-fw fa-smile-o');" ><i class="fa fa-fw fa-smile-o"></i><span>Mask Detect</span></a>
+				<a onclick="load_page('tools/machinarium', 790, 'No', 'Machinarium', 'fa fa-fw fa-reddit-alien');"><i class="fa fa-fw fa-reddit-alien"></i><span>Machinarium</span></a>
+				<a onclick="load_page('tools/graduation/index.html', 600, 'No', 'Graduation', 'fa fa-fw fa-hospital-o');"><i class="fa fa-fw fa-hospital-o"></i><span>Graduation</span></a>
+				<a onclick="load_page('tools/fruit_ninja', 600, 'No', 'Fruit Ninja', 'fa fa-fw fa-apple');"><i class="fa fa-fw fa-apple"></i><span>Fruit Ninja</span></a>
+				<a onclick="load_page('tools/mspaint', 600, 'No', 'MS Paint', 'fa fa-fw fa-paint-brush');"><i class="fa fa-fw fa-paint-brush"></i><span>MS Paint</span></a>
+				<a onclick="load_page('tools/plants_vs_zombies', 600, 'No', 'Plants VS Zombies', 'fa fa-fw fa-certificate');" ><i class="fa fa-fw fa-certificate"></i><span>Plants VS Zombies</span></a>
+				<a onclick="load_page('tools/cassette_player', 600, 'No', 'Cassette Player', 'fa fa-fw fa-youtube-play');"><i class="fa fa-fw fa-youtube-play"></i><span>Cassette Player</span></a>
+				<a onclick="load_page('tools/chess', 600, 'No', 'Chiease Chess', 'fa fa-fw fa-braille');"><i class="fa fa-fw fa-braille"></i><span>Chiease Chess</span></a>
+				<a onclick="load_page('tools/swf/photo', 600, 'No', 'Photo', 'fa fa-fw fa-picture-o');"><i class="fa fa-fw fa-picture-o"></i><span>Photo</span></a>
+				<a onclick="load_page('tools/swf/calc', 608, 'No', 'Calculate', 'fa fa-fw fa-calculator');"><i class="fa fa-fw fa-calculator"></i><span>Calculate</span></a>
+				<a onclick="load_page('tools/conv_net_draw', 600, 'No', 'ConvNet Draw', 'fa fa-fw fa-share-alt');" ><i class="fa fa-fw fa-share-alt"></i><span>ConvNet Draw</span></a>
+				<a onclick="load_page('tools/nnsvg', 600, 'Yes', 'NNSVG', 'fa fa-fw fa-share-alt-square');"><i class="fa fa-fw fa-share-alt-square"></i><span>NNSVG</span></a>
+				<a onclick="load_page('tools/netscope/#/editor', 600, 'Yes', 'Netscope', 'fa fa-fw fa-object-ungroup');"><i class="fa fa-fw fa-object-ungroup"></i><span>Netscope</span></a>
+				<a onclick="load_page('tools/vip_video', 700, 'No', 'VIP Video', 'fa fa-fw fa-video-camera');"><i class="fa fa-fw fa-video-camera"></i><span>VIP Video</span></a>
+				<a onclick="load_page('tools/swf/nes', 510, 'No', 'NES Gemes', 'fa fa-fw fa-gamepad');"><i class="fa fa-fw fa-gamepad"></i><span>NES Gemes</span></a>
+				<a onclick="load_page('tools/swf/match', 700, 'No', 'Matchman', 'fa fa-fw fa-wheelchair-alt');"><i class="fa fa-fw fa-wheelchair-alt"></i><span>Matchman</span></a>
+				<a onclick="load_page('tools/linux', 510, 'No', 'Linux OS', 'fa fa-fw fa-linux');"><i class="fa fa-fw fa-linux"></i><span>Linux OS</span></a>
+				<a onclick="load_page('tools/swf/iq_test', 600, 'No', 'IQ Test', 'fa fa-fw fa-graduation-cap');"><i class="fa fa-fw fa-graduation-cap"></i><span>IQ Test</span></a>
+				<a onclick="load_page('tools/work_space', 600, 'No', 'Work Space', 'fa fa-fw fa-tv');" ><i class="fa fa-fw fa-tv"></i><span>Work Space</span></a>
+			</div>
 		</nav>
-		<div class="content-wrap">
-			<section ><iframe id="main-iframe" src="tools/home" frameborder="0" width="100%" scrolling="No" height="600px"></iframe></section>
-		</div><!-- /content -->
-	</div><!-- /tabs -->
-</div><!-- /container -->
-
-<script type="text/javascript" src="js/cbpFWTabs.js"></script>
+		<button class="close-button" id="close-button">Close Menu</button>
+	</div>
+	<button class="menu-button" id="open-button">Open Menu</button>
+	<div class="content-wrap">
+		<div class="content" style="padding:0 auto;">
+			<header class="codrops-header">
+				<h1 id="main-head">Home</h1><h1 id="main-head-class" class="fa fa-fw fa-home"></h1>
+			</header>
+			<iframe id="main-iframe" src="tools/home" style="left:100px;" frameborder="0" width="100%" scrolling="No" height="600px"></iframe>
+			<!-- Related demos -->
+		</div>
+	</div>
+<script src="js/classie.js"></script>
+<script src="js/main.js"></script>
 <script type="text/javascript">
-(function() {
-	[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
-		new CBPFWTabs( el );
-	});
-})();
-
-function load_page(url, h, scro) {
-    document.getElementById("main-iframe").src = url;
-	document.getElementById("main-iframe").height = h;
+function load_page(url, hei, scro, head, clas) {
+	if (url == 'tools/home') {
+		url = 'tools/home/index80.html';
+	}
+	document.getElementById("close-button").click();
+	if (document.getElementById("main-head").innerHTML == head) {
+		return;
+	}
+	
+	document.getElementById("main-iframe").src = url;
+	document.getElementById("main-head").innerHTML = head;
+	document.getElementById("main-iframe").height = hei;
 	document.getElementById("main-iframe").scrolling = scro;
+	document.getElementById("main-head-class").className = clas;
 }
+
+window.onload=function(){
+	//document.getElementById("close-button").click();
+};
 </script>
 </body>
 </html>
