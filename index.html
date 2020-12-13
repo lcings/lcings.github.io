@@ -1,1 +1,75 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<title>lcings</title>
+
+<!--公告样式-->
+<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+
+<!--必要样式-->
+<link rel="stylesheet" type="text/css" href="css/tabs.css" />
+<link rel="stylesheet" type="text/css" href="css/tabstyles.css" />
+<link rel="stylesheet" href="css/w-icon.css">
+<script src="js/modernizr.custom.js"></script>
+
+</head>
+<body>
+
+<div class="container" style="padding-top:40px">
+	<div class="tabs tabs-style-circle">
+		<nav>
+			<ul>
+				<li><a onclick="load_page('tools/home', 600, 'No');" class="w-icon-windows"><br/><span>Home</span></a></li>
+				<li><a onclick="load_page('tools/mask_detection', 1000, 'Yes');" class="w-icon-smile"><br/><span>MaskDetect</span></a></li>
+				<li><a onclick="load_page('http://flash.7k7k.com/fl_9/20120522/jixiemichen/7.html', 600, 'No');" class="w-icon-reddit"><br/><span>Machinarium</span></a></li>
+				<li><a onclick="load_page('tools/graduation/index.html', 600, 'No');"class="w-icon-global"><br/><span>Graduation</span></a></li>
+				<li><a onclick="load_page('tools/fruit_ninja', 600, 'No');"class="w-icon-apple"><br/><span>FruitNinja</span></a></li>
+			</ul><br/>
+			<ul>
+				<li><a onclick="load_page('tools/mspaint', 600, 'No');" class="w-icon-pinterest"><br/><span>MSpaint</span></a></li>
+				<li><a onclick="load_page('tools/plants_vs_zombies', 600, 'No');" class="w-icon-eye-o"><br/><span>plantsVSzombies</span></a></li>
+				<li><a onclick="load_page('tools/cassette_player', 600, 'No');" class="w-icon-camera-o"><br/><span>CassettePlayer</span></a></li>
+				<li><a onclick="load_page('tools/chess', 600, 'No');" class="w-icon-appstore-o"><br/><span>Chess</span></a></li>
+				<li><a onclick="load_page('tools/swf/photo', 600, 'No');" class="w-icon-picture"><br/><span>Photo</span></a></li>
+			</ul><br/>
+			<ul>
+				<li><a onclick="load_page('tools/html/work_space.html', 600, 'No');" class="w-icon-laptop"><br/><span>WorkSpace</span></a></li>
+				<li><a onclick="load_page('tools/swf/calc', 608);" class="w-icon-table"><br/><span>Calculate</span></a></li>
+				<li><a onclick="load_page('tools/conv_net_draw', 600, 'No');" class="w-icon-share"><br/><span>ConvNetDraw</span></a></li>
+				<li><a onclick="load_page('tools/nnsvg', 600, 'Yes');" class="w-icon-uiw"><br/><span>NNSVG</span></a></li>
+				<li><a onclick="load_page('tools/netscope/#/editor', 600, 'Yes');" class="w-icon-component"><br/><span>Netscope</span></a></li>
+			</ul><br/>
+			<ul>
+				<li><a onclick="load_page('tools/vip_video', 700, 'No');" class="w-icon-cloud-upload-o"><br/><span>VIP Video</span></a></li>
+				<li><a onclick="load_page('tools/swf/nes', 510, 'No');" class="w-icon-coffee"><br/><span>NES</span></a></li>
+				<li><a onclick="load_page('tools/swf/match', 700, 'No');" class="w-icon-asterisk"><br/><span>match</span></a></li>
+				<li><a onclick="load_page('https://bellard.org/jslinux/vm.html?url=alpine-x86.cfg&mem=192', 510, 'No');" class="w-icon-linux"><br/><span>Linux</span></a></li>
+				<li><a onclick="load_page('tools/swf/iq_test', 600, 'No');" class="w-icon-meh-o"><br/><span>IQ Test</span></a></li>
+			</ul>
+		</nav>
+		<div class="content-wrap">
+			<section ><iframe id="main-iframe" src="tools/home" frameborder="0" width="100%" scrolling="No" height="600px"></iframe></section>
+		</div><!-- /content -->
+	</div><!-- /tabs -->
+</div><!-- /container -->
+
+<script type="text/javascript" src="js/cbpFWTabs.js"></script>
+<script type="text/javascript">
+(function() {
+	[].slice.call( document.querySelectorAll( '.tabs' ) ).forEach( function( el ) {
+		new CBPFWTabs( el );
+	});
+})();
+
+function load_page(url, h, scro) {
+    document.getElementById("main-iframe").src = url;
+	document.getElementById("main-iframe").height = h;
+	document.getElementById("main-iframe").scrolling = scro;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link rel="stylesheet" href="styles.css">
+  <script src="jquery-3.2.1.min.js"></script>
+  <script src="convnetdraw.js"></script>
+  <script type="text/javascript">
+  
+    var Timer;
+    var drawing;
+
+    $(window).on('load', function () {
+      drawing = new convnetdraw.drawing("net");
+      drawing.draw(document.getElementById("script").value);
+    });
+
+    function smallDelay() {
+      clearTimeout(Timer);
+      Timer = setTimeout(function () {
+        drawing.draw(document.getElementById("script").value);
+      }, 500);
+    };
+  </script>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="flex-1">
+        <form>
+          <label for="ratio1">方向 1</label>
+          <input id="ratio1" type="range" value="300" min="0" max="1000"></br></br>
+          <label for="ratio2">方向 2</label>
+          <input id="ratio2" type="range" value="500" min="0" max="1000"></br></br>
+
+          <label for="zoomx">X缩放</label>
+          <input id="zoomx" type="range" value="4" min="0" max="20"></br></br>
+
+          <label for="zoomy">Y缩放</label>
+          <input id="zoomy" type="range" value="4" min="0" max="20"></br></br>
+
+          <label for="zoomz">Z缩放</label>
+          <input id="zoomz" type="range" value="4" min="0" max="20"></br></br>
+
+          <input type="checkbox" id="blackandwhite">
+          <label for="blackandwhite">灰度模式</label>
+        </form>
+
+      </div>
+      <div class="flex-2">
+        <div class="flex-2-child">
+          <textarea onkeyup="smallDelay()" id="script">
+# example
+
+input(28, 28, 1)
+conv(24, 24, 8)
+relu(24, 24, 8)
+pool(12, 12, 8)
+conv(10, 10, 16)
+relu(10, 10, 16)
+pool(4, 4, 16)
+fullyconn(1, 1, 10)
+softmax(1, 1, 10)
+</textarea>
+        </div>
+        <div class="flex-3-child" id="net"></div>
+      </div>
+    </div>
+  </header>
+</body>
+
+</html>
