@@ -1,0 +1,102 @@
+---------------------------------------------------------------------------------------------------
+Version 1.4.0
+---------------------------------------------------------------------------------------------------
+
+Improvements
+  - Index for Xml Edit mode implemented 
+  - Removed console parameters to run SWiX
+  - Show current file name in window's title
+  - Several UI improvements (tags view, xml editor, context menu, etc.)
+
+Fixes
+  - Remove text by Delete key fixed
+  - Tags selection fixed
+  - Save attributes in XML edit mode
+  - Issue with wrong decompilation of properties thickness and sharpness
+  - Recent List 
+
+Other
+  - Console application parameters changed
+
+---------------------------------------------------------------------------------------------------
+Version 1.3.0
+---------------------------------------------------------------------------------------------------
+
+Improvements
+  - Added ListView for SWF Tags representation
+
+---------------------------------------------------------------------------------------------------
+Version 1.1.1
+---------------------------------------------------------------------------------------------------
+
+Improvements
+
+  - Minor internal improvements.
+
+
+---------------------------------------------------------------------------------------------------
+Version 1.1.0
+---------------------------------------------------------------------------------------------------
+
+Improvements
+
+  - Added possibility to open multiple SWF files at once.
+  - Text highlighting works much faster now.
+  - Introduced UI control to represent opened SWF as tags/resources tree 
+    (in addition to the representation in the form of XML).
+
+Fixes 
+
+  - Issue while closing document(s).
+  - Issue while closing application.
+
+
+
+---------------------------------------------------------------------------------------------------
+Version 1.0.4
+---------------------------------------------------------------------------------------------------
+
+Improvements      
+
+  - UI: refreshed toolbar icons and "About" window.
+
+
+
+---------------------------------------------------------------------------------------------------
+Version 1.0.3
+---------------------------------------------------------------------------------------------------
+
+Improvements
+
+  - UI: toolbar icons replaced with its true-color versions (previous were in 8-bit color).
+
+Fixes
+
+  - Issue while opening of non-existent files.
+
+
+
+---------------------------------------------------------------------------------------------------
+Version 1.0.2
+---------------------------------------------------------------------------------------------------
+
+Improvements
+
+  - UI: toolbar icons are duplicated beside the corresponding items in the main program menu).
+  - Improvements of internal functionality.
+
+
+
+---------------------------------------------------------------------------------------------------
+Version 1.0.1
+---------------------------------------------------------------------------------------------------
+
+Improvements
+
+  - Speeded up highlighting while scrolling text.
+
+Fixes
+
+  - Issue with Paste operation while no documents are opened.
+  - Issue with playback swf file from folders with names in cyrillic.
+
