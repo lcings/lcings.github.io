@@ -1,11 +1,21 @@
+import os
+import sys
 import base64
 import json
 import hashlib
-import os
-import sys
+import datetime
+import random
+import string
 from cryptography.hazmat.primitives import serialization
 
-PRIVATE_KEY_PEM = """-----BEGIN PRIVATE KEY-----
+PUB_KEY = """
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDWnEqax70EE4go8U93srsjGnSgo
+6xFqt2C8sFOhWxXZOmHs2y/SxPMZuludmzQR8KulnGg4TIgYy6pF0r/H9qct1ZRfm
+jx8zCw4+zLlNpsTqcPuiAYYi7h1Cmpu7xQjxh+OeC0tZaEChZQli+1wgktirhvScZ
+RDN6h8s4R0oteWQIDAQAB
+"""
+
+PRIVATE_KEY = """-----BEGIN PRIVATE KEY-----
 MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANacSprHvQQTiCjx
 T3eyuyMadKCjrEWq3YLywU6FbFdk6YezbL9LE8xm6W52bNBHwq6WcaDhMiBjLqkX
 Sv8f2py3VlF+aPHzMLDj7MuU2mxOpw+6IBhiLuHUKam7vFCPGH454LS1loQKFlCW
@@ -23,21 +33,7 @@ N/fhBSZK5JSicQ==
 -----END PRIVATE KEY-----"""
 
 SEED = 1314
-# ==========================================
-
 ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-
-def b58encode(v):
-    n = int.from_bytes(v, 'big')
-    res = ""
-    while n > 0:
-        n, r = divmod(n, 58)
-        res = ALPHABET[r] + res
-    pad = 0
-    for b in v:
-        if b == 0: pad += 1
-        else: break
-    return "1" * pad + res
 
 def b58decode(v):
     n = 0
@@ -50,34 +46,14 @@ def b58decode(v):
         else: break
     return b"\x00" * pad + n.to_bytes((n.bit_length() + 7) // 8, 'big')
 
-def generate_app_key(a1_str):
-    try:
-        a1_data = b58decode(a1_str)
-        a1_data = a1_data.rjust(32, b'\x00')
-
-        m = hashlib.md5()
-        m.update(a1_data)
-        a1_md5 = m.digest() 
-
-        v14_val = 131232
-        v14_bytes = v14_val.to_bytes(4, byteorder='little')
-
-        suffix = bytes.fromhex("7c450204c7383c227b38f219")
-        a2_data = a1_md5 + v14_bytes + suffix
-
-        return b58encode(a2_data)
-    except Exception as e:
-        return f"发生错误: {e}"
-
 def rsa_pri_encode_raw(text_info, pri_key_pem):
     pri_key = serialization.load_pem_private_key(pri_key_pem.encode(), password=None)
     numbers = pri_key.private_numbers()
     d, n = numbers.d, numbers.public_numbers.n
-    
+
     input_bytes = text_info.encode('utf-8')
     block_size = 128
     chunk_size = 128 
-
     final_res = bytearray()
     for i in range(0, len(input_bytes), chunk_size):
         chunk = input_bytes[i:i+chunk_size]
@@ -85,7 +61,7 @@ def rsa_pri_encode_raw(text_info, pri_key_pem):
         m = int.from_bytes(padded, byteorder='big')
         c = pow(m, d, n)
         final_res.extend(c.to_bytes(block_size, byteorder='big'))
-        
+
     return base64.b64encode(final_res).decode('utf-8')
 
 
@@ -96,41 +72,40 @@ def shift_encrypt(input_bytes, seed):
 
     v7 = to_int16(seed)
     output_chars = []
-    
     for byte_val in input_bytes:
         hibyte = (v7 >> 8) & 0xFF
         cipher_byte = byte_val ^ hibyte
-
         char1 = chr((cipher_byte // 26) + 65)
         char2 = chr((cipher_byte % 26) + 65)
         output_chars.append(char1 + char2)
-
         v7 = to_int16(-12691 * (cipher_byte + v7) + 22719)
-        
     return "".join(output_chars)
 
-def create_registration_file(app_id, device_fingerprint, start_time, end_time, platform):
-    app_key = generate_app_key(app_id)
+def generate_random_string(length=16):
+    characters = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
 
+def create_registration_file(app_id, app_key, fingerprint, start_time, end_time, platform):
+    active_key = generate_random_string(19) #要求长度16或者19
     important_dict = {
-        "activeKey":"86L1123M9135PRVE",
-        "deviceFingerPrint": device_fingerprint,
+        "activeKey": active_key,
+        "deviceFingerPrint": fingerprint,
         "sdkType":"ArcFace",
         "startTime": start_time,
         "endTime": end_time,
         "platform": platform
     }
+
     important_json = json.dumps(important_dict, separators=(',', ':'))
     #print(important_json)
-    important_b64 = rsa_pri_encode_raw(important_json, PRIVATE_KEY_PEM)
+    important_b64 = rsa_pri_encode_raw(important_json, PRIVATE_KEY)
     #print(important_b64)
-
     base_info = {
         "appId": app_id,
         "appKey": app_key,
         "sdkVersion": "2.2"
     }
-    
+
     main_structure = {
         "assistantVersion": "1.0",
         "baseInfo": json.dumps(base_info, separators=(',', ':')),
@@ -139,8 +114,7 @@ def create_registration_file(app_id, device_fingerprint, start_time, end_time, p
     }
 
     final_json_str = json.dumps(main_structure, separators=(',', ':'))
-    #print(final_json_str)
-
+    print(final_json_str)
     content = shift_encrypt(final_json_str.encode('utf-8'), SEED)
     return content
 
@@ -151,12 +125,11 @@ def shift_decrypt(input_str, seed):
 
     v7 = to_int16(seed)
     clean_input = "".join(input_str.split()).replace('"', '')
-
     reconstructed_bytes = []
     for i in range(len(clean_input) // 2):
         v4 = (26 * (ord(clean_input[2 * i]) - 65) + (ord(clean_input[2 * i + 1]) - 65)) & 0xFF
         reconstructed_bytes.append(v4)
-    
+
     result = []
     for byte_val in reconstructed_bytes:
         hibyte = (v7 >> 8) & 0xFF
@@ -169,14 +142,12 @@ def rsa_pub_decode(b64_input, pub_key_bytes):
         public_key = serialization.load_der_public_key(pub_key_bytes)
     except:
         public_key = serialization.load_pem_public_key(pub_key_bytes)
-    
+
     numbers = public_key.public_numbers()
     n, e = numbers.n, numbers.e
-
     encrypted_data = base64.b64decode(b64_input)
     decrypted_final = bytearray()
     block_size = 128 
-    
     for i in range(0, len(encrypted_data), block_size):
         block = encrypted_data[i:i+block_size]
         if len(block) < block_size: break
@@ -203,10 +174,10 @@ def verify_sdk_pair(data_dict):
     v12 = b58decode(app_key)
     v7 = hashlib.md5(v8).digest()
     if v7 == v12[0:16]:
-        print("app_key match success.")
+        print("app_key match success")
     else:
-        print("app_key match fail.")
-    print(f"AppId MD5: {v7.hex()}")
+        print("app_key match fail")
+    #print(f"AppId MD5: {v7.hex()}")
     print(f"AppKey Prefix: {v12[0:16].hex()}")
 
 def shift_encrypt_pubkey(raw_bytes, seed):
@@ -216,7 +187,6 @@ def shift_encrypt_pubkey(raw_bytes, seed):
 
     v7 = to_int16(seed)
     output_chars = []
-    
     for byte_val in raw_bytes:
         hibyte = (v7 >> 8) & 0xFF
         cipher_byte = byte_val ^ hibyte
@@ -229,46 +199,90 @@ def shift_encrypt_pubkey(raw_bytes, seed):
         
     return "".join(output_chars)
 
+def rsa_decrypt_raw_with_serialization(base64_str, key):
+    if isinstance(key, str):
+        key = key.encode()
 
-if __name__ == "__main__":
-    # 输入参数
-    my_app_id = "FjUC3woBMibV16SHzpaWiCXWgVU7HCkUZvhT4ZcQu7aV"
-    my_device = "1940e9664411bca7ea2aed36be5bb05b"
-    my_start  = "1777479475"
-    my_end    = "1785255475"
-    my_plt    = "linux"
-    
+    key = serialization.load_pem_private_key(key, password=None)
+    pn = key.private_numbers()
+    n = pn.public_numbers.n
+    d = pn.d
+
+    encrypted_data = base64.b64decode(base64_str)
+    decrypted_payload = b""
+    for i in range(0, len(encrypted_data), 128):
+        chunk = encrypted_data[i:i+128]
+        if len(chunk) < 128:
+            break
+        c = int.from_bytes(chunk, byteorder='big')
+        m = pow(c, d, n)
+        decrypted_block = m.to_bytes(128, byteorder='big')
+        decrypted_payload += decrypted_block[1:]
+
+    return decrypted_payload.rstrip(b'\x00').decode('utf-8', errors='ignore')
+
+def ultimate_json_parse(raw_str):
     try:
-        final_content = create_registration_file(my_app_id, my_device, my_start, my_end, my_plt)
-        print("--- reg_code ---")
-        print(final_content)
-        pub_b64 = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDWnEqax70EE4go8U93srsjGnSgo6xFqt2C8sFOhWxXZOmHs2y/SxPMZuludmzQR8KulnGg4TIgYy6pF0r/H9qct1ZRfmjx8zCw4+zLlNpsTqcPuiAYYi7h1Cmpu7xQjxh+OeC0tZaEChZQli+1wgktirhvScZRDN6h8s4R0oteWQIDAQAB"
-        pub_der_bytes = base64.b64decode(pub_b64)
-        cipher_pubkey = shift_encrypt_pubkey(pub_der_bytes, 1314)
-        print("--- cipher_pubkey ---")
-        print(cipher_pubkey)
+        return json.loads(raw_str)
+    except json.JSONDecodeError:
+        pass
 
+    indices = [i for i, char in enumerate(raw_str) if char == '}']
+    for index in reversed(indices):
+        candidate = raw_str[:index + 1]
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+    return None
+
+def main():
+    input_file = sys.argv[1]
+    if not os.path.exists(input_file):
+        print(f"input_file not found: '{input_file}'")
+        return
+    with open(input_file, 'r', encoding='utf-8') as f:
+        content = f.read().strip()
+    decrypted_result = rsa_decrypt_raw_with_serialization(content, PRIVATE_KEY)
+    data = ultimate_json_parse(decrypted_result)
+    platform = data.get("platform")
+    if platform == "windows_x64":
+        app_id = "CHXzt9XtJEaL5Fkp3wxMfH6Nzasux9knPAn4rAqhCmQK"
+        app_key = "7o725e4mR6g7xcfhsvSztPnt8jpWq8t6FbgnuhnSMzgv"
+    else:
+        app_id = "5dgTYg9STpEoEvJDcTUJKG11ePeCrgQ75kJpspSqsChg"
+        app_key = "Gu8z244xvDtXzPSDhrHbHiqTJuTmwRZHkLBYdhHMzeak"
+    deviceFingerPrint = data.get("deviceFingerPrint")
+    
+    start  = str(int(datetime.datetime.strptime("2026-04-29 16:17:55", "%Y-%m-%d %H:%M:%S").timestamp()))
+    end    = str(int(datetime.datetime.strptime("2036-04-29 16:17:55", "%Y-%m-%d %H:%M:%S").timestamp()))
+    try:
+        final_content = create_registration_file(app_id, app_key, deviceFingerPrint, start, end, platform)
+        pub_der_bytes = base64.b64decode(PUB_KEY)
+        cipher_pubkey = shift_encrypt_pubkey(pub_der_bytes, SEED)
         try:
             content = final_content
-            v79_decrypted = shift_decrypt(content, 1314)
+            v79_decrypted = shift_decrypt(content, SEED)
             json_str = v79_decrypted.decode('utf-8', errors='ignore').strip('\x00')
             #print(json_str)
             data_dict = json.loads(json_str)
-
             target_b64 = data_dict.get("importantInfo", "")
             if target_b64:
-                rsa_key_data = shift_decrypt(cipher_pubkey, 1314)
+                rsa_key_data = shift_decrypt(cipher_pubkey, SEED)
                 final_bytes = rsa_pub_decode(target_b64, rsa_key_data)
                 result_text = final_bytes.strip(b'\x00').decode('utf-8', errors='ignore')
-                #print("importantInfo:"+ result_text)
+                print("importantInfo:"+ result_text)
+                print("--- cipher_pubkey ---")
+                print(cipher_pubkey)
             else:
                 print("[-] JSON not found importantInfo")
             verify_sdk_pair(data_dict)
         except Exception as e:
             print(f"[-] fail: {e}")
-        # 存入文件测试
-        #with open("license.txt", "w") as f:
-        #    f.write(final_content)
-            
+        with open("license.txt", "w") as f:
+            f.write(final_content)
     except Exception as e:
-        print(f"发生错误: {e}")
+        print(f"err: {e}")
+
+if __name__ == "__main__":
+    main()
