@@ -162,9 +162,9 @@ int main(int argc, char** argv)
             int gender = -1;
             int live = -1;
 
-            float yaw = 0.0f;
-            float pitch = 0.0f;
-            float roll = 0.0f;
+            float yaw = detectedFaces.face3DAngleInfo.yaw[i];
+            float pitch = detectedFaces.face3DAngleInfo.pitch[i];
+            float roll = detectedFaces.face3DAngleInfo.roll[i];
 
             if (ageInfo.num > i && ageInfo.ageArray) {
                 age = ageInfo.ageArray[i];
